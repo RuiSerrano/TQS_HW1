@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div>
+            <select id="firstSelect">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="MTZ">MTZ</option>
+                <option value="FRA">FRA</option>
+            </select>
+            <input type="text" id="input" />
+            <select id="secondSelect"> 
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="MTZ">MTZ</option>
+                <option value="FRA">FRA</option>
+            </select>
+            <input type="text" id="input2" />
+            <button id="convertBtn" type="button">Convert</button>
+        </div>
+        <script src="./jquery-3.3.1.js"></script>
+        <script>
+            $("#convertBtn").click(function () {
+                var from = $("#firstSelect").val();
+                var to = $("#secondSelect").val();
+                var value = $("#input").val();
+                $.ajax({
+                    url: 'http://localhost:37643/TQS_HW/webresources/convert?from='+from+'&to='+to+'&value='+value,
+                    method: 'get',
+                    success: function (response) {
+                        console.log(response);
+                        $("#input2").val(response);
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
