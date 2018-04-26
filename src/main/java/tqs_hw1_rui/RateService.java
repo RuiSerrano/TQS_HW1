@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tqs_hw1_rui;
+package tqs_hw1_rui;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,50 +61,47 @@ public class RateService {
      * ? access_key = YOUR_ACCESS_KEY & source = GBP & currencies =
      * USD,AUD,CAD,PLN,MXN & format = 1
      */
-    public void close() {
-        try {
-            httpClient.close();
-        } catch (IOException ex) {
-            Logger.getLogger(RateService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    
 
     // sendLiveRequest() function is created to request and retrieve the data
     public double getRate(String to) {
+//        if (!validateCurrencieName(to)) {
+//            return 0; // invalid name, returning 0 so that the API can return a response code status 400.
+//        }
+            // The following line initializes the HttpGet Object with the URL in order to send a request
+            HttpGet get = new HttpGet(BASE_URL + ENDPOINT + "?access_key=" + ACCESS_KEY);
 
-        // The following line initializes the HttpGet Object with the URL in order to send a request
-        HttpGet get = new HttpGet(BASE_URL + ENDPOINT + "?access_key=" + ACCESS_KEY);
+            try {
+                CloseableHttpResponse response = httpClient.execute(get);
+                HttpEntity entity = response.getEntity();
 
-        try {
-            CloseableHttpResponse response = httpClient.execute(get);
-            HttpEntity entity = response.getEntity();
-
-            // the following line converts the JSON Response to an equivalent Java Object
-            JSONObject exchangeRates = new JSONObject(EntityUtils.toString(entity));
-            response.close();
-            return exchangeRates.getJSONObject("quotes").getDouble("USD" + to.toUpperCase());
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+                // the following line converts the JSON Response to an equivalent Java Object
+                JSONObject exchangeRates = new JSONObject(EntityUtils.toString(entity));
+                response.close();
+                return exchangeRates.getJSONObject("quotes").getDouble("USD" + to.toUpperCase());
+            } catch (ClientProtocolException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        
+        
         return 0; //supposed to never reach here
     }
 
-    private boolean validateCurrencieName(String name) {
-        return (name.equals("USD")||name.equals("AUD")||name.equals("CAD")||name.equals("PLN")||name.equals("MXN")||name.equals("EUR"));
+    public boolean validateCurrencieName(String name) {
+        return (name.equals("USD") || name.equals("AUD") || name.equals("CAD") || name.equals("PLN") || name.equals("MXN") || name.equals("EUR"));
     }
 
-    // sendLiveRequest() function is executed
-
+     //sendLiveRequest() function is executed
 }
 
 

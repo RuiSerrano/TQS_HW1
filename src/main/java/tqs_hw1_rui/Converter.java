@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tqs_hw1_rui;
+package tqs_hw1_rui;
 
 /**
  *
@@ -22,13 +22,10 @@ public class Converter {
 
     public double getRate(String from, String to) {
         double tax;
-        double valueToDolar;
         if (from.equals("USD")) {
             return rs.getRate(to);
         } else {
             tax = 1 / rs.getRate(from);
-            //valueToDolar = tax * value;
-            //return valueToDolar * rs.getRate(to);
             return tax*rs.getRate(to);
         }
     }

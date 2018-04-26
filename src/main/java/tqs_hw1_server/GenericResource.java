@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.tqs_hw1_server;
+package tqs_hw1_server;
 
-import com.mycompany.tqs_hw1_rui.Converter;
-import java.io.IOException;
+import tqs_hw1_rui.Converter;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -16,16 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import org.apache.http.HttpEntity;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
@@ -63,10 +53,14 @@ public class GenericResource {
      */
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public double getJson(@QueryParam("from") String from, @QueryParam("to") String to, @QueryParam("value") Double value) throws Exception {
+    public Response getJson(@QueryParam("from") String from, @QueryParam("to") String to, @QueryParam("value") Double value) throws Exception {
         double rate = converter.getRate(from, to);
+        if (rate ==0 ){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+            
+        }
        double response = converter.convert(value, rate);
-       return response;
+       return Response.ok(response,MediaType.TEXT_PLAIN).build();
     }
 
     /**
