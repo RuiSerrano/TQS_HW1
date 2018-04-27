@@ -10,11 +10,9 @@ package tqs_hw1_rui;
  * @author ruiserrano
  */
 
-import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
@@ -31,7 +29,7 @@ public class SeleniumTest {
     @Before
     public void setUp() throws Exception {
         // CHANGE CHROMEDRIVER PATH TO CORRECT PATH!!!
-        System.setProperty("webdriver.chrome.driver", "/Users/ruiserrano/Documents/TQS/chromedriver/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/Users/ruiserrano/NetBeansProjects/TQS_HW1_rui/src/main/resources/chromedriver");
         driver = new ChromeDriver();
         baseUrl = "https://www.katalon.com/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -39,6 +37,7 @@ public class SeleniumTest {
 
     @Test
     public void testTQSHW1() throws Exception {
+        // CHANGE URL TO MATCH (PORT)
         driver.get("http://localhost:37643/TQS_HW/");
         driver.findElement(By.id("firstSelect")).click();
         new Select(driver.findElement(By.id("firstSelect"))).selectByVisibleText("EUR");

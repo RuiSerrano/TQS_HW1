@@ -28,7 +28,6 @@ import org.json.JSONObject;
  */
 public class RateService {
 
-// f84efe469a2dafaefb35664321f00edb
     // essential URL structure is built using constants
     public static final String ACCESS_KEY = "f84efe469a2dafaefb35664321f00edb";
     public static final String BASE_URL = "http://apilayer.net/api/";
@@ -41,69 +40,27 @@ public class RateService {
         this.httpClient = HttpClients.createDefault();
     }
 
-    /**
-     *
-     * Notes:
-     *
-     * A JSON response of the form {"key":"value"} is considered a simple Java
-     * JSONObject. To get a simple value from the JSONObject, use:
-     * <JSONObject identifier>.get<Type>("key");
-     *
-     * A JSON response of the form {"key":{"key":"value"}} is considered a
-     * complex Java JSONObject. To get a complex value like another JSONObject,
-     * use: <JSONObject identifier>.getJSONObject("key")
-     *
-     * Values can also be JSONArray Objects. JSONArray objects are simple,
-     * consisting of multiple JSONObject Objects.
-     *
-     * http://apilayer.net/api/live
-     *
-     * ? access_key = YOUR_ACCESS_KEY & source = GBP & currencies =
-     * USD,AUD,CAD,PLN,MXN & format = 1
-     */
-    
-
     // sendLiveRequest() function is created to request and retrieve the data
     public double getRate(String to) {
-//        if (!validateCurrencieName(to)) {
-//            return 0; // invalid name, returning 0 so that the API can return a response code status 400.
-//        }
-            // The following line initializes the HttpGet Object with the URL in order to send a request
-            HttpGet get = new HttpGet(BASE_URL + ENDPOINT + "?access_key=" + ACCESS_KEY);
+        // The following line initializes the HttpGet Object with the URL in order to send a request
+        HttpGet get = new HttpGet(BASE_URL + ENDPOINT + "?access_key=" + ACCESS_KEY);
 
-            try {
-                CloseableHttpResponse response = httpClient.execute(get);
-                HttpEntity entity = response.getEntity();
-
-                // the following line converts the JSON Response to an equivalent Java Object
-                JSONObject exchangeRates = new JSONObject(EntityUtils.toString(entity));
-                response.close();
-                return exchangeRates.getJSONObject("quotes").getDouble("USD" + to.toUpperCase());
-            } catch (ClientProtocolException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        
-        
+        try {
+            CloseableHttpResponse response = httpClient.execute(get);
+            HttpEntity entity = response.getEntity();
+            // the following line converts the JSON Response to an equivalent Java Object
+            JSONObject exchangeRates = new JSONObject(EntityUtils.toString(entity));
+            response.close();
+            return exchangeRates.getJSONObject("quotes").getDouble("USD" + to.toUpperCase());
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return 0; //supposed to never reach here
     }
-
-    public boolean validateCurrencieName(String name) {
-        return (name.equals("USD") || name.equals("AUD") || name.equals("CAD") || name.equals("PLN") || name.equals("MXN") || name.equals("EUR"));
-    }
-
-     //sendLiveRequest() function is executed
 }
-
-
-
-//validate currencies = USD,AUD,CAD,PLN,MXN!!!
